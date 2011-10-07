@@ -7,7 +7,7 @@ DataSource  data;
 
 
 void setup() {
-  size(480, 120);
+  size(1024,768);
   smooth();
   
   data = new NYTDataSource();
@@ -16,5 +16,18 @@ void setup() {
 }
 
 void draw(){
-  
+  background(255);
+  strokeWeight(2);
+  int x = 0;
+  int y = 0;
+  int w=165;
+  color strokeColor = #CCCCCC;
+  stroke(strokeColor);
+  for(int j = 5; j< 1024; j+=w+5){
+    x = j;
+    for(int i =3; i<786; i+=5){
+      y = i;
+      line(x, y, x+w, y);
+    }
+  }
 }
