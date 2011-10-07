@@ -6,14 +6,12 @@ import java.util.Random;
 
 DataSource  data;
 
-
 void setup() {
   size(1024,768);
   smooth();
   
   data = new NYTDataSource();
   ArrayList months = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv");
-  
 }
 
 void draw(){

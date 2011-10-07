@@ -14,7 +14,7 @@ public class NewsMonth{
     WorldArticles = aWorldArticles;
     USArticles = aUSArticles;
     
-    WorldPercentage = (float)TotalArticles * 100.00 / (float)WorldArticles;
-    USPercentage = (float)TotalArticles * 100.00 / (float)USArticles;
+    WorldPercentage = (float)TotalArticles * (float)100.00 / (float)WorldArticles;
+    USPercentage = (float)TotalArticles * (float)100.00 / (float)USArticles;
   }
 }

@@ -6,7 +6,6 @@ public class NewsColumnModel{
 
   public NewsColumnModel(int columnRows){
     lines = new ArrayList(columnRows);
-    month = newsMonth;
   }
 
   //populate the column, and return the number not filled
