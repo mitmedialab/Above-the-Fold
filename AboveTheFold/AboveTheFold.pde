@@ -1,6 +1,8 @@
 //ABOVE THE FOLD
 //VIEWING THE FRONT PAGE OF THE NYT
 
+import java.util.*;
+
 DataSource  data;
 
 
@@ -9,7 +11,8 @@ void setup() {
   smooth();
   
   data = new NYTDataSource();
-
+  ArrayList months = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv");
+  System.out.println(months.size());
 }
 
 void draw(){
