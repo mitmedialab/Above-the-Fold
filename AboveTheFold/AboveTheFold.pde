@@ -11,7 +11,18 @@ void setup() {
   smooth();
   
   data = new NYTDataSource();
-  ArrayList months = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv");
+  ArrayList newsMonths = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv"); 
+  ArrayList displayMonths = new ArrayList(newsMonths.size());
+  Iterator newsMonthsItr = newsMonths.iterator();
+  
+  while(newsMonthsItr.hasNext()){
+    NewsMonth m = (NewsMonth)newsMonthsItr.next();
+    System.out.println(Integer.toString(m.FPYear) + "/" + Integer.toString(m.FPMonth));
+    System.out.println(Integer.toString(m.TotalArticles) + " : " + Integer.toString(m.WorldArticles) + ", " + Integer.toString(m.USArticles));
+    System.out.println(Float.toString(m.WorldPercentage) + " : " + Float.toString(m.USPercentage));
+    DisplayMonth dm = new DisplayMonth(m);
+    displayMonths.add(dm);
+  }
 }
 
 void draw(){

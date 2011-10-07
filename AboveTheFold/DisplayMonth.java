@@ -18,7 +18,6 @@ public class DisplayMonth{
     for(int i =0; i< columnCount; i++){
       columns.add(new NewsColumnModel(columnRows));
     }
-
     int USRows = rowsForPercentage(month.USPercentage);
     int WorldRows = rowsForPercentage(month.WorldPercentage);
 
@@ -33,8 +32,13 @@ public class DisplayMonth{
 
   protected int fillRows(int count, String type){
     int remaining = count;
-    while(currentColumn!=columnCount){
+    while(currentColumn < columnCount){
+//      System.out.println("filling column");
+//      System.out.println(Integer.toString(remaining) + ": " + type);
       remaining = ((NewsColumnModel)columns.get(currentColumn)).populateColumn(remaining, type);
+      if(remaining <= 0){
+        currentColumn++; 
+      }
     }
     return remaining;
   }
