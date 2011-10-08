@@ -13,11 +13,15 @@ public class NewsColumnModel{
 
   //populate the column, and return the number not filled
   public int populateColumn(int number, String type){
-//    System.out.println("START: " + Integer.toString(number));//
-//    System.out.println("currentKey: " + Integer.toString(currentKey));
+    if(currentKey>= columnRows){
+      return number;
+    }
+    //System.out.println("START: " + Integer.toString(number));//
+    //System.out.println("Rows: " + Integer.toString(columnRows) + "currentKey: " + Integer.toString(currentKey));
     int populationLimit = currentKey + number;
     for(int i = currentKey; i < populationLimit; i++){
       if(i >= columnRows){
+        System.out.println("BREAK");
         break;
       }
       System.out.print(".");
@@ -25,7 +29,7 @@ public class NewsColumnModel{
       currentKey++;
       number--;
     }
-//    System.out.println("END: " + Integer.toString(number));
+    //System.out.println("END: " + Integer.toString(number));
     return number;
   }
 }

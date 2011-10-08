@@ -33,11 +33,12 @@ public class DisplayMonth{
   protected int fillRows(int count, String type){
     int remaining = count;
     while(currentColumn < columnCount){
-//      System.out.println("filling column");
-//      System.out.println(Integer.toString(remaining) + ": " + type);
+      System.out.println(Integer.toString(remaining) + ": " + type);
       remaining = ((NewsColumnModel)columns.get(currentColumn)).populateColumn(remaining, type);
-      if(remaining <= 0){
+      if(remaining >= 0){
         currentColumn++; 
+      }else{
+        break;
       }
     }
     return remaining;
@@ -45,6 +46,6 @@ public class DisplayMonth{
 
   protected int rowsForPercentage(float percentage){
     int totalRows = columnRows * columnCount;
-    return Math.round((float)totalRows * percentage);
+    return (int)Math.round(((float)totalRows/100.00) * percentage);
   }
 }
