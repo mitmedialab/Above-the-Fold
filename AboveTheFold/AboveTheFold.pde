@@ -7,11 +7,13 @@ import java.util.Random;
 DataSource  data;
 ArrayList displayMonths;
 int currentDisplayMonthIndex;
-int columnWidth = 165;
+int columnWidth = 140;
 int columnHorizMargin = 10; 
+int marginLeft = 50;
+int marginTop = 50;
 
 void setup() {
-  size(1024,768);
+  size(1000,700);
   smooth();
   
   data = new NYTDataSource();
@@ -46,9 +48,9 @@ void showCurrentDisplayMonth(){
 }
 
 void drawColumn(NewsColumnModel column, int columnNumber){
-  int x = (columnWidth  + columnHorizMargin) * columnNumber;
+  int x = marginLeft + (columnWidth  + columnHorizMargin) * columnNumber;
   int lineHeight = 12;
-  int y = 5;
+  int y = marginTop;
 
   Iterator columnLineIterator = column.columnLines.iterator();
   color strokeColor = #CCCCCC;
