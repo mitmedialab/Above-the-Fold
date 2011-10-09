@@ -8,8 +8,8 @@ DataSource  data;
 ArrayList displayMonths;
 int currentDisplayMonthIndex;
 int columnWidth = 140;
-int columnHorizMargin = 10; 
-int marginLeft = 50;
+int columnHorizMargin = 5; 
+int marginLeft = 65;
 int marginTop = 50;
 
 void setup() {
@@ -49,21 +49,21 @@ void showCurrentDisplayMonth(){
 
 void drawColumn(NewsColumnModel column, int columnNumber){
   int x = marginLeft + (columnWidth  + columnHorizMargin) * columnNumber;
-  int lineHeight = 12;
+  int lineHeight = 17;
   int y = marginTop;
 
   Iterator columnLineIterator = column.columnLines.iterator();
   color strokeColor = #CCCCCC;
-  strokeWeight(4);
+  strokeWeight(12);
   
   while(columnLineIterator.hasNext()){
     String type = (String) columnLineIterator.next();
     if(type == "U.S."){
-      strokeColor = #CCAAAA;
+      strokeColor = #F0997C;
     }else if(type == "World"){
-      strokeColor = #AAAACC;
+      strokeColor = #85A2C5;
     }else{
-      strokeColor = #CCCCCC;
+      strokeColor = #AAAAAA;
     }
     stroke(strokeColor);
     strokeCap(SQUARE);

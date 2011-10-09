@@ -10,7 +10,7 @@ public class DisplayMonth{
 
   public DisplayMonth(NewsMonth newsMonth){
     currentColumn = 0;
-    columnRows = 50;
+    columnRows = 35;
     columnCount = 6;
     
     month = newsMonth;
