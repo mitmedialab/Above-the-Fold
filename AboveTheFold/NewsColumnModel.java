@@ -9,6 +9,9 @@ public class NewsColumnModel{
     columnLines = new ArrayList(columnRows);
     currentKey = 0;
     columnRows = rows;
+    for(int i =0; i < columnRows; i++){
+      columnLines.add("Neither");
+    }
   }
 
   //populate the column, and return the number not filled
@@ -21,11 +24,11 @@ public class NewsColumnModel{
     int populationLimit = currentKey + number;
     for(int i = currentKey; i < populationLimit; i++){
       if(i >= columnRows){
-        System.out.println("BREAK");
+        //System.out.println("BREAK");
         break;
       }
-      System.out.print(".");
-      columnLines.add(type);
+      //System.out.print(".");
+      columnLines.set(i, type);
       currentKey++;
       number--;
     }

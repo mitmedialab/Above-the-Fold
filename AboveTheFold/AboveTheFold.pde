@@ -5,6 +5,10 @@ import java.util.*;
 import java.util.Random;
 
 DataSource  data;
+ArrayList displayMonths;
+int currentDisplayMonthIndex;
+int columnWidth = 165;
+int columnHorizMargin = 10; 
 
 void setup() {
   size(1024,768);
@@ -12,35 +16,56 @@ void setup() {
   
   data = new NYTDataSource();
   ArrayList newsMonths = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv"); 
-  ArrayList displayMonths = new ArrayList(newsMonths.size());
+  displayMonths = new ArrayList(newsMonths.size());
   Iterator newsMonthsItr = newsMonths.iterator();
   
   while(newsMonthsItr.hasNext()){
     NewsMonth m = (NewsMonth)newsMonthsItr.next();
-    System.out.println(Integer.toString(m.FPYear) + "/" + Integer.toString(m.FPMonth));
-    System.out.println(Integer.toString(m.TotalArticles) + " : " + Integer.toString(m.WorldArticles) + ", " + Integer.toString(m.USArticles));
-    System.out.println(Float.toString(m.WorldPercentage) + " : " + Float.toString(m.USPercentage));
+    //System.out.println(Integer.toString(m.FPYear) + "/" + Integer.toString(m.FPMonth));
+    //System.out.println(Integer.toString(m.TotalArticles) + " : " + Integer.toString(m.WorldArticles) + ", " + Integer.toString(m.USArticles));
+    //System.out.println(Float.toString(m.WorldPercentage) + " : " + Float.toString(m.USPercentage));
     DisplayMonth dm = new DisplayMonth(m);
     displayMonths.add(dm);
   }
+  currentDisplayMonthIndex = displayMonths.size()/2;
 }
 
 void draw(){
   background(255);
-  strokeWeight(4);
-  int x = 0;
-  int y = 0;
-  int w = 165;
-  int tabbing = 15;
+  showCurrentDisplayMonth();
+}
+
+void showCurrentDisplayMonth(){
+  DisplayMonth currentDisplayMonth = (DisplayMonth)displayMonths.get(currentDisplayMonthIndex);
+  Iterator columnIterator = currentDisplayMonth.columns.iterator();
+  int columnNumber = 0;
+  while(columnIterator.hasNext()){
+    drawColumn((NewsColumnModel) columnIterator.next(), columnNumber); 
+    columnNumber++;   
+  }
+}
+
+void drawColumn(NewsColumnModel column, int columnNumber){
+  int x = (columnWidth  + columnHorizMargin) * columnNumber;
+  int lineHeight = 12;
+  int y = 5;
+
+  Iterator columnLineIterator = column.columnLines.iterator();
   color strokeColor = #CCCCCC;
-  stroke(strokeColor);
-  strokeCap(SQUARE);
+  strokeWeight(4);
   
-  for(int j = 5; j< 1024; j+=w+10){
-    x = j;
-    for(int i =3; i<786; i+=8){
-      y = i;
-      line(x, y, x+w, y);
+  while(columnLineIterator.hasNext()){
+    String type = (String) columnLineIterator.next();
+    if(type == "U.S."){
+      strokeColor = #CCAAAA;
+    }else if(type == "World"){
+      strokeColor = #AAAACC;
+    }else{
+      strokeColor = #CCCCCC;
     }
+    stroke(strokeColor);
+    strokeCap(SQUARE);
+    line(x, y, x + columnWidth, y);
+    y += lineHeight;
   }
 }
