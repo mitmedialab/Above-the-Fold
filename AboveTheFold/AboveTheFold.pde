@@ -7,19 +7,25 @@ import java.util.Random;
 DataSource  data;
 ArrayList displayMonths;
 int currentDisplayMonthIndex;
+int displayWidth = 1000;
+int displayHeight = 700;
 int columnWidth = 140;
 int columnHorizMargin = 5; 
 int marginLeft = 65;
-int marginTop = 50;
+int marginTop = 80;
+PFont titleFont;
+
 
 void setup() {
-  size(1000,700);
+  size(displayWidth, displayHeight);
   smooth();
   
   data = new NYTDataSource();
   ArrayList newsMonths = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv"); 
   displayMonths = new ArrayList(newsMonths.size());
   Iterator newsMonthsItr = newsMonths.iterator();
+  
+  titleFont = loadFont("Times-Roman-24.vlw");
   
   while(newsMonthsItr.hasNext()){
     NewsMonth m = (NewsMonth)newsMonthsItr.next();
@@ -39,7 +45,13 @@ void draw(){
 
 void showCurrentDisplayMonth(){
   DisplayMonth currentDisplayMonth = (DisplayMonth)displayMonths.get(currentDisplayMonthIndex);
-  Iterator columnIterator = currentDisplayMonth.columns.iterator();
+  
+  textFont(titleFont);
+  fill(0,0,0);
+  text(Integer.toString(currentDisplayMonth.month.FPMonth) + " / " + 
+       Integer.toString(currentDisplayMonth.month.FPYear), displayWidth/2, 50);
+  
+  Iterator columnIterator = currentDisplayMonth.columns.iterator();  
   int columnNumber = 0;
   while(columnIterator.hasNext()){
     drawColumn((NewsColumnModel) columnIterator.next(), columnNumber); 
@@ -63,7 +75,7 @@ void drawColumn(NewsColumnModel column, int columnNumber){
     }else if(type == "World"){
       strokeColor = #85A2C5;
     }else{
-      strokeColor = #AAAAAA;
+      strokeColor = #666666;
     }
     stroke(strokeColor);
     strokeCap(SQUARE);
@@ -71,3 +83,12 @@ void drawColumn(NewsColumnModel column, int columnNumber){
     y += lineHeight;
   }
 }
+
+void mousePressed() {
+  if (mouseX > displayWidth/2) {
+    currentDisplayMonthIndex += 1;
+  }else{
+    currentDisplayMonthIndex -=1; 
+  }
+}
+
