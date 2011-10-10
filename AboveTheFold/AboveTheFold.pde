@@ -14,6 +14,7 @@ int columnHorizMargin = 5;
 int marginLeft = 65;
 int marginTop = 80;
 PFont titleFont;
+DisplayTimeline timeline;
 
 
 void setup() {
@@ -23,10 +24,11 @@ void setup() {
   data = new NYTDataSource();
   ArrayList newsMonths = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv"); 
   displayMonths = new ArrayList(newsMonths.size());
-  Iterator newsMonthsItr = newsMonths.iterator();
+  timeline = new DisplayTimeline(newsMonths, 65, 650, 870, 50, 0.5);
   
   titleFont = loadFont("Times-Roman-24.vlw");
-  
+
+  Iterator newsMonthsItr = newsMonths.iterator();  
   while(newsMonthsItr.hasNext()){
     NewsMonth m = (NewsMonth)newsMonthsItr.next();
     //System.out.println(Integer.toString(m.FPYear) + "/" + Integer.toString(m.FPMonth));
@@ -41,6 +43,7 @@ void setup() {
 void draw(){
   background(255);
   showCurrentDisplayMonth();
+  drawTimeline();
 }
 
 void showCurrentDisplayMonth(){
@@ -57,6 +60,57 @@ void showCurrentDisplayMonth(){
     drawColumn((NewsColumnModel) columnIterator.next(), columnNumber); 
     columnNumber++;   
   }
+}
+
+void drawTimeline(){
+  
+  color strokeColor=#AAAAAA;
+  stroke(strokeColor);
+  strokeWeight(1);
+  
+  //draw quarterly ticks
+  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+    if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth % 3 == 0){
+      int xLocation = timeline.getXLocation(monthIndex);
+      line(xLocation, timeline.bottom+2, xLocation, timeline.bottom-5);
+    }
+  }
+  
+  //draw annual ticks
+  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+    if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth % 12 == 0){
+      int xLocation = timeline.getXLocation(monthIndex);
+      line(xLocation, timeline.bottom+2, xLocation, timeline.bottom-15);
+    }
+  }
+  
+  //draw world graph
+  strokeWeight(1);
+  strokeColor = #85A2C5;
+  stroke(strokeColor);
+  int[] previousLocation = new int[2];
+  previousLocation[0] = -50;//won't let me use null. Not sure of the convention
+  previousLocation[1] = -50;
+  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+    int[] location = timeline.getWorldLocation(monthIndex);
+    if(previousLocation[0] == -50 && previousLocation[1] == -50){
+      previousLocation[0] = location[0];
+      previousLocation[1] = location[1];
+    }
+    line(previousLocation[0], previousLocation[1], location[0], location[1]);
+      previousLocation[0] = location[0];
+      previousLocation[1] = location[1];
+  }
+  
+  strokeColor=#AAAAAA;
+  stroke(strokeColor);
+  strokeWeight(1);
+
+  //draw scale
+  line(timeline.left, timeline.bottom, timeline.left+timeline.width, timeline.bottom);  
+  line(timeline.left, timeline.bottom, timeline.left, timeline.bottom-50);
+  line(timeline.width+timeline.left, timeline.bottom, timeline.width+timeline.left, timeline.bottom-50);
+
 }
 
 void drawColumn(NewsColumnModel column, int columnNumber){
