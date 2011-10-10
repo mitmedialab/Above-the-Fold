@@ -63,36 +63,36 @@ void showCurrentDisplayMonth(){
 }
 
 void drawTimeline(){
-  
-  color strokeColor=#AAAAAA;
-  stroke(strokeColor);
+
+  stroke(#AAAAAA);
   strokeWeight(1);
+  int location[] = new int[2];
   
   //draw quarterly ticks
+  /*
   for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
     if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth % 3 == 0){
       int xLocation = timeline.getXLocation(monthIndex);
       line(xLocation, timeline.bottom+2, xLocation, timeline.bottom-5);
     }
-  }
+  }*/
   
   //draw annual ticks
   for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
-    if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth % 12 == 0){
+    if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth-1 % 12 == 0){
       int xLocation = timeline.getXLocation(monthIndex);
-      line(xLocation, timeline.bottom+2, xLocation, timeline.bottom-15);
+      line(xLocation, timeline.bottom+15, xLocation, timeline.bottom);
     }
   }
   
   //draw world graph
-  strokeWeight(1);
-  strokeColor = #85A2C5;
-  stroke(strokeColor);
+  strokeWeight(1.5);
+  stroke(#85A2C5);
   int[] previousLocation = new int[2];
   previousLocation[0] = -50;//won't let me use null. Not sure of the convention
   previousLocation[1] = -50;
   for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
-    int[] location = timeline.getWorldLocation(monthIndex);
+    location = timeline.getWorldLocation(monthIndex);
     if(previousLocation[0] == -50 && previousLocation[1] == -50){
       previousLocation[0] = location[0];
       previousLocation[1] = location[1];
@@ -102,14 +102,39 @@ void drawTimeline(){
       previousLocation[1] = location[1];
   }
   
-  strokeColor=#AAAAAA;
-  stroke(strokeColor);
+  //draw the U.S. graph
+  strokeWeight(1.5);
+  stroke(#F0997C);
+  previousLocation[0] = -50;//won't let me use null. Not sure of the convention
+  previousLocation[1] = -50;
+  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+    location = timeline.getUSLocation(monthIndex);
+    if(previousLocation[0] == -50 && previousLocation[1] == -50){
+      previousLocation[0] = location[0];
+      previousLocation[1] = location[1];
+    }
+    line(previousLocation[0], previousLocation[1], location[0], location[1]);
+      previousLocation[0] = location[0];
+      previousLocation[1] = location[1];
+  }
+  
+
+  
+  stroke(#AAAAAA);
   strokeWeight(1);
 
   //draw scale
   line(timeline.left, timeline.bottom, timeline.left+timeline.width, timeline.bottom);  
   line(timeline.left, timeline.bottom, timeline.left, timeline.bottom-50);
   line(timeline.width+timeline.left, timeline.bottom, timeline.width+timeline.left, timeline.bottom-50);
+
+  //draw the current Cursor
+  stroke(#333333);
+  strokeWeight(1.5);
+  fill(#000000, 0.0);
+  int cursorLocation = timeline.getXLocation(currentDisplayMonthIndex);
+  rect( cursorLocation-2, timeline.bottom-90 , 4, 100);
+
 
 }
 
