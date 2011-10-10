@@ -7,9 +7,11 @@ public class DisplayTimeline{
   public int bottom;
   public int height;
   public int width;
+  public float articleUnit;
   private float monthUnit;
   private float verticalUnit;
   private float verticalScale;
+  private int maximumArticles;
 
   public DisplayTimeline(ArrayList newsMonths, int left, int bottom, int width, int height, float verticalScale){
     this.left = left;
@@ -18,8 +20,18 @@ public class DisplayTimeline{
     this.width = width;
     this.newsMonths = newsMonths;
     this.monthUnit = (float)width / (float)this.newsMonths.size();
-    this.verticalUnit = (float)100.00 / (float)height;
+    this.verticalUnit = (float)height / (float)100.00;
     this.verticalScale = verticalScale;
+    
+    Iterator newsMonthIterator = newsMonths.iterator();
+    while(newsMonthIterator.hasNext()){
+      NewsMonth newsMonth = (NewsMonth)newsMonthIterator.next();
+      if(newsMonth.TotalArticles > maximumArticles){
+        maximumArticles = newsMonth.TotalArticles;
+      }
+    }
+    this.articleUnit = (float)height / (float)maximumArticles;
+    
   } 
 
   public int[] getWorldLocation(int newsMonthIndex){

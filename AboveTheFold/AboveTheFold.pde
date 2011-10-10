@@ -8,11 +8,11 @@ DataSource  data;
 ArrayList displayMonths;
 int currentDisplayMonthIndex;
 int displayWidth = 1000;
-int displayHeight = 700;
+int displayHeight = 750;
 int columnWidth = 140;
 int columnHorizMargin = 5; 
 int marginLeft = 65;
-int marginTop = 80;
+int marginTop = 60;
 PFont titleFont;
 PFont labelFont;
 PFont legendFont;
@@ -26,7 +26,7 @@ void setup() {
   data = new NYTDataSource();
   ArrayList newsMonths = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv"); 
   displayMonths = new ArrayList(newsMonths.size());
-  timeline = new DisplayTimeline(newsMonths, 65, 630, 870, 50, 0.5);
+  timeline = new DisplayTimeline(newsMonths, 65, 730, 870, 80, 1.0);
   
   titleFont = loadFont("Times-Roman-24.vlw");
   labelFont = loadFont("Times-Roman-14.vlw");
@@ -48,6 +48,7 @@ void setup() {
 void draw(){
   background(255);
   showCurrentDisplayMonth();
+  drawTotalArticleTimeline();
   drawTimeline();
   drawLabels();
 }
@@ -58,7 +59,7 @@ void showCurrentDisplayMonth(){
   textFont(titleFont);
   fill(#000000);
   text(Integer.toString(currentDisplayMonth.month.FPMonth) + " / " + 
-       Integer.toString(currentDisplayMonth.month.FPYear), displayWidth/2, 50);
+       Integer.toString(currentDisplayMonth.month.FPYear), displayWidth/2, 40);
   
   Iterator columnIterator = currentDisplayMonth.columns.iterator();  
   int columnNumber = 0;
@@ -73,26 +74,74 @@ void drawLabels(){
   //U.S. News
   fill(#F0997C);
   stroke(#F0997C);
-  rect( timeline.left, timeline.bottom-125 , 10, 10);
+  rect( timeline.left, timeline.bottom-105 , 10, 10);
 
   //World News
   fill(#85A2C5);
   stroke(#85A2C5);
-  rect( timeline.left+100, timeline.bottom-125 , 10, 10);
+  rect( timeline.left+100, timeline.bottom-105 , 10, 10);
 
   //Other
   fill(#333333);
   stroke(#333333);
-  rect( timeline.left+200, timeline.bottom-125 , 10, 10);
+  rect( timeline.left+200, timeline.bottom-105 , 10, 10);
 
 
   textFont(labelFont);
   fill(#000000);
-  text("U.S. News",  timeline.left + 20, timeline.bottom-115);
-  text("World News",  timeline.left + 120, timeline.bottom-115);
-  text("Other",  timeline.left + 220, timeline.bottom-115);
+  text("U.S.",  timeline.left + 20, timeline.bottom-95);
+  text("World",  timeline.left + 120, timeline.bottom-95);
+  text("Other",  timeline.left + 220, timeline.bottom-95);
   
 
+
+}
+
+void drawTotalArticleTimeline(){
+  int bottom = timeline.bottom - 140;
+  int[] location = new int[2];
+
+  stroke(#AAAAAA);
+  strokeWeight(1);  
+  textFont(labelFont);
+  fill(#000000);
+
+  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+    if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth-1 % 12 == 0){
+      int xLocation = timeline.getXLocation(monthIndex);
+      line(xLocation, bottom+15, xLocation, bottom);
+      text(Integer.toString((int)((NewsMonth)timeline.newsMonths.get(monthIndex)).FPYear), xLocation +2, bottom+14);
+    }
+  }
+
+  
+  //Fill area with Article Count
+  fill(#CCCCCC);
+  stroke(#666666);
+  strokeWeight(0.8);
+  beginShape();
+  vertex(timeline.left, bottom);
+  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+    location[0] = timeline.getXLocation(monthIndex);
+    location[1] = bottom - (int)Math.round(((NewsMonth)timeline.newsMonths.get(monthIndex)).TotalArticles * timeline.articleUnit);
+    vertex(location[0], location[1]);
+  }
+  vertex(timeline.left+timeline.width, location[1]);
+  vertex(timeline.left+timeline.width, bottom);
+  endShape();
+  
+  //Draw Scale
+  line(timeline.left, bottom, timeline.left+timeline.width, bottom);  
+  line(timeline.left, bottom, timeline.left, bottom-timeline.height);
+  line(timeline.width+timeline.left, bottom, timeline.width+timeline.left, bottom-timeline.height);
+
+
+  //draw the current Cursor
+  stroke(#333333);
+  strokeWeight(1.5);
+  fill(#333333);
+  int cursorLocation = timeline.getXLocation(currentDisplayMonthIndex);
+  rect( cursorLocation-1, bottom-80 , 2, 80);
 
 }
 
@@ -152,15 +201,15 @@ void drawTimeline(){
 
   //draw scale
   line(timeline.left, timeline.bottom, timeline.left+timeline.width, timeline.bottom);  
-  line(timeline.left, timeline.bottom, timeline.left, timeline.bottom-100);
-  line(timeline.width+timeline.left, timeline.bottom, timeline.width+timeline.left, timeline.bottom-100);
+  line(timeline.left, timeline.bottom, timeline.left, timeline.bottom-timeline.height);
+  line(timeline.width+timeline.left, timeline.bottom, timeline.width+timeline.left, timeline.bottom-timeline.height);
 
   //draw the current Cursor
   stroke(#333333);
   strokeWeight(1.5);
   fill(#000000, 0.0);
   int cursorLocation = timeline.getXLocation(currentDisplayMonthIndex);
-  rect( cursorLocation-2, timeline.bottom-90 , 4, 85);
+  rect( cursorLocation-2, timeline.bottom-80 , 4, 75);
 
 
 }

@@ -46,6 +46,6 @@ public class DisplayMonth{
 
   protected int rowsForPercentage(float percentage){
     int totalRows = columnRows * columnCount;
-    return (int)Math.round(((float)totalRows/100.00) * percentage);
+    return (int)Math.round(((float)totalRows / 100.00) * percentage);
   }
 }
