@@ -7,8 +7,8 @@ import java.util.Random;
 DataSource  data;
 ArrayList displayMonths;
 int currentDisplayMonthIndex;
-int displayWidth = 1000;
-int displayHeight = 750;
+int displayWidth = 1024;
+int displayHeight = 786;
 int columnWidth = 140;
 int columnHorizMargin = 5; 
 int marginLeft = 65;
@@ -17,6 +17,10 @@ PFont titleFont;
 PFont labelFont;
 PFont legendFont;
 DisplayTimeline timeline;
+
+PFont fontA;
+PFont fontB;
+PImage nytNameplate;  // Declare variable "nameplate" of type PImage
 
 
 void setup() {
@@ -36,13 +40,15 @@ void setup() {
   Iterator newsMonthsItr = newsMonths.iterator();  
   while(newsMonthsItr.hasNext()){
     NewsMonth m = (NewsMonth)newsMonthsItr.next();
-    //System.out.println(Integer.toString(m.FPYear) + "/" + Integer.toString(m.FPMonth));
-    //System.out.println(Integer.toString(m.TotalArticles) + " : " + Integer.toString(m.WorldArticles) + ", " + Integer.toString(m.USArticles));
-    //System.out.println(Float.toString(m.WorldPercentage) + " : " + Float.toString(m.USPercentage));
     DisplayMonth dm = new DisplayMonth(m);
     displayMonths.add(dm);
   }
   currentDisplayMonthIndex = displayMonths.size()/2;
+  
+  //nameplate related
+  fontA = loadFont("Times-Roman-13.vlw");
+  fontB = loadFont("Arial-BoldMT-15.vlw");
+  nytNameplate = loadImage("NYT_nameplate.png");  // Load the image into the program  
 }
 
 void draw(){
@@ -50,6 +56,48 @@ void draw(){
   showCurrentDisplayMonth();
   drawTimeline();
   drawLabels();
+  drawNamePlate();
+}
+
+void drawNamePlate(){
+  textAlign(CENTER);
+
+  // "All the News" box
+  // relative width: width/37, relative horizontal placement: width/6.66
+  rect(33, 20, 130, 55);
+
+  // "All the News" text
+  // Set the font and its size (in units of pixels)
+  fill(#000000);
+  textFont(fontA, 13);
+  text("\"All the News", 90, 40);
+  text("That's Fit to Analyze\"", 100, 60);
+  // Center the nameplate, TODO update height to make relative
+  // or width/1.6, if you want relative width, and width*0.625 for relative horizontal placement
+  image(nytNameplate, width/5, 30, 778, 127); 
+  // nameplate line 1
+  smooth();
+  strokeWeight(0.5);
+  line(30, 160, 950, 160);
+  // Volume Number in nameplate
+  textFont(fontA, 13);
+  text("VOL. CLXI..No. 55,555", 90, 175);
+  // Price in nameplate
+  textFont(fontA, 13);
+  text("$2.00", 940, 175);
+  // nameplate line 2
+  smooth();
+  strokeWeight(1);
+  line(30, 180, 950, 180);
+  fill(#000000);
+  
+  textFont(fontB, 15);
+  text("Meta Edition", 1100, 40);
+  textFont(fontA, 13);
+  text("A comparison of front", 1100, 60);
+  text("page coverage of US", 1100, 75);
+  text("and World news between", 1100, 90);
+  text("1987 and 2007", 1100, 105);
 }
 
 void showCurrentDisplayMonth(){
@@ -69,7 +117,8 @@ void showCurrentDisplayMonth(){
 }
 
 void drawLabels(){
-  
+  textAlign(LEFT);
+
   //U.S. News
   fill(#F0997C);
   stroke(#F0997C);
@@ -85,20 +134,18 @@ void drawLabels(){
   stroke(#333333);
   rect( timeline.left+200, timeline.bottom-105 , 10, 10);
 
-
   textFont(labelFont);
   fill(#000000);
   text("U.S.",  timeline.left + 20, timeline.bottom-95);
   text("World",  timeline.left + 120, timeline.bottom-95);
   text("Other",  timeline.left + 220, timeline.bottom-95);
-  
-
-
 }
 
 
 
 void drawTimeline(){
+  textAlign(LEFT);
+
   stroke(#AAAAAA);
   strokeWeight(1);
   int location[] = new int[2];
