@@ -15,6 +15,7 @@ int marginLeft = 65;
 int marginTop = 80;
 PFont titleFont;
 PFont labelFont;
+PFont legendFont;
 DisplayTimeline timeline;
 
 
@@ -25,10 +26,12 @@ void setup() {
   data = new NYTDataSource();
   ArrayList newsMonths = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv"); 
   displayMonths = new ArrayList(newsMonths.size());
-  timeline = new DisplayTimeline(newsMonths, 65, 650, 870, 50, 0.5);
+  timeline = new DisplayTimeline(newsMonths, 65, 630, 870, 50, 0.5);
   
   titleFont = loadFont("Times-Roman-24.vlw");
   labelFont = loadFont("Times-Roman-14.vlw");
+  legendFont = loadFont("Times-Roman-16.vlw");
+
 
   Iterator newsMonthsItr = newsMonths.iterator();  
   while(newsMonthsItr.hasNext()){
@@ -46,6 +49,7 @@ void draw(){
   background(255);
   showCurrentDisplayMonth();
   drawTimeline();
+  drawLabels();
 }
 
 void showCurrentDisplayMonth(){
@@ -64,8 +68,35 @@ void showCurrentDisplayMonth(){
   }
 }
 
-void drawTimeline(){
+void drawLabels(){
+  
+  //U.S. News
+  fill(#F0997C);
+  stroke(#F0997C);
+  rect( timeline.left, timeline.bottom-125 , 10, 10);
 
+  //World News
+  fill(#85A2C5);
+  stroke(#85A2C5);
+  rect( timeline.left+100, timeline.bottom-125 , 10, 10);
+
+  //Other
+  fill(#333333);
+  stroke(#333333);
+  rect( timeline.left+200, timeline.bottom-125 , 10, 10);
+
+
+  textFont(labelFont);
+  fill(#000000);
+  text("U.S. News",  timeline.left + 20, timeline.bottom-115);
+  text("World News",  timeline.left + 120, timeline.bottom-115);
+  text("Other",  timeline.left + 220, timeline.bottom-115);
+  
+
+
+}
+
+void drawTimeline(){
   stroke(#AAAAAA);
   strokeWeight(1);
   int location[] = new int[2];
