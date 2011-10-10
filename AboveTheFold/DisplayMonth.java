@@ -34,7 +34,11 @@ public class DisplayMonth{
    monthNames = new String[] {"January", "February", "March", "April", "May",
                 "June", "July", "August", "September", "October",
                 "November", "December"};
-   monthName = monthNames[month.FPMonth -1 ];
+   if(month.FPMonth >0 && month.FPMonth <=12){
+     monthName = monthNames[month.FPMonth -1 ];
+   }else{
+     monthName = "unknown";
+   }
   }
   
 

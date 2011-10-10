@@ -111,10 +111,11 @@ void drawNamePlate(){
 void showCurrentDisplayMonth(){
   DisplayMonth currentDisplayMonth = (DisplayMonth)displayMonths.get(currentDisplayMonthIndex);
   
-  textFont(titleFont);
+  textAlign(CENTER);
+  textFont(nameplateText, 13);
   fill(#000000);
-  text(currentDisplayMonth.monthName + " / " + 
-       Integer.toString(currentDisplayMonth.month.FPYear), displayWidth/2, 40);
+  text(currentDisplayMonth.monthName + ", " + 
+       Integer.toString(currentDisplayMonth.month.FPYear), marginLeft + contentWidth/2, nameplateInfoBarTop);
   
   Iterator columnIterator = currentDisplayMonth.columns.iterator();  
   int columnNumber = 0;
