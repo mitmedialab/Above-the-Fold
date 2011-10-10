@@ -6,7 +6,9 @@ public class DisplayMonth{
   public ArrayList columns;
   public int currentColumn;
   public int columnRows;
-  public int columnCount; 
+  public int columnCount;
+  public String[] monthNames;
+  public String monthName;
 
   public DisplayMonth(NewsMonth newsMonth){
     currentColumn = 0;
@@ -28,7 +30,13 @@ public class DisplayMonth{
       //System.out.println("  " + Integer.toString(remainderUS));
       //System.out.println("  " + Integer.toString(remainderWorld));
     }
+    
+   monthNames = new String[] {"January", "February", "March", "April", "May",
+                "June", "July", "August", "September", "October",
+                "November", "December"};
+   monthName = monthNames[month.FPMonth -1 ];
   }
+  
 
   protected int fillRows(int count, String type){
     int remaining = count;
@@ -48,4 +56,5 @@ public class DisplayMonth{
     int totalRows = columnRows * columnCount;
     return (int)Math.round(((float)totalRows / 100.00) * percentage);
   }
+  
 }

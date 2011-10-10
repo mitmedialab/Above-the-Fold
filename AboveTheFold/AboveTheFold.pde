@@ -113,7 +113,7 @@ void showCurrentDisplayMonth(){
   
   textFont(titleFont);
   fill(#000000);
-  text(Integer.toString(currentDisplayMonth.month.FPMonth) + " / " + 
+  text(currentDisplayMonth.monthName + " / " + 
        Integer.toString(currentDisplayMonth.month.FPYear), displayWidth/2, 40);
   
   Iterator columnIterator = currentDisplayMonth.columns.iterator();  
