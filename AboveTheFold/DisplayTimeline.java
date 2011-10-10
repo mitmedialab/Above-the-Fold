@@ -8,10 +8,10 @@ public class DisplayTimeline{
   public int height;
   public int width;
   public float articleUnit;
+  public int maximumArticles;
   private float monthUnit;
   private float verticalUnit;
   private float verticalScale;
-  private int maximumArticles;
 
   public DisplayTimeline(ArrayList newsMonths, int left, int bottom, int width, int height, float verticalScale){
     this.left = left;
@@ -54,5 +54,9 @@ public class DisplayTimeline{
 
   public int getYLocation(float percentage){
     return this.bottom - (int)Math.round(percentage * (this.verticalUnit * this.verticalScale));
+  }
+  
+  public int totalArticleUnits(int number){
+     return (int)Math.round( (float)number * this.articleUnit );
   }
 }

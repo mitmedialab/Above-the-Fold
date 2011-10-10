@@ -12,7 +12,7 @@ int displayHeight = 750;
 int columnWidth = 140;
 int columnHorizMargin = 5; 
 int marginLeft = 65;
-int marginTop = 60;
+int marginTop = 180;
 PFont titleFont;
 PFont labelFont;
 PFont legendFont;
@@ -48,7 +48,6 @@ void setup() {
 void draw(){
   background(255);
   showCurrentDisplayMonth();
-  drawTotalArticleTimeline();
   drawTimeline();
   drawLabels();
 }
@@ -97,53 +96,7 @@ void drawLabels(){
 
 }
 
-void drawTotalArticleTimeline(){
-  int bottom = timeline.bottom - 140;
-  int[] location = new int[2];
 
-  stroke(#AAAAAA);
-  strokeWeight(1);  
-  textFont(labelFont);
-  fill(#000000);
-
-  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
-    if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth-1 % 12 == 0){
-      int xLocation = timeline.getXLocation(monthIndex);
-      line(xLocation, bottom+15, xLocation, bottom);
-      text(Integer.toString((int)((NewsMonth)timeline.newsMonths.get(monthIndex)).FPYear), xLocation +2, bottom+14);
-    }
-  }
-
-  
-  //Fill area with Article Count
-  fill(#CCCCCC);
-  stroke(#666666);
-  strokeWeight(0.8);
-  beginShape();
-  vertex(timeline.left, bottom);
-  for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
-    location[0] = timeline.getXLocation(monthIndex);
-    location[1] = bottom - (int)Math.round(((NewsMonth)timeline.newsMonths.get(monthIndex)).TotalArticles * timeline.articleUnit);
-    vertex(location[0], location[1]);
-  }
-  vertex(timeline.left+timeline.width, location[1]);
-  vertex(timeline.left+timeline.width, bottom);
-  endShape();
-  
-  //Draw Scale
-  line(timeline.left, bottom, timeline.left+timeline.width, bottom);  
-  line(timeline.left, bottom, timeline.left, bottom-timeline.height);
-  line(timeline.width+timeline.left, bottom, timeline.width+timeline.left, bottom-timeline.height);
-
-
-  //draw the current Cursor
-  stroke(#333333);
-  strokeWeight(1.5);
-  fill(#333333);
-  int cursorLocation = timeline.getXLocation(currentDisplayMonthIndex);
-  rect( cursorLocation-1, bottom-80 , 2, 80);
-
-}
 
 void drawTimeline(){
   stroke(#AAAAAA);
