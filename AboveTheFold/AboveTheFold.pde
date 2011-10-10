@@ -15,6 +15,10 @@ int marginLeft = 30;
 int marginTop = 210;
 int nameplateInfoBarTop = 175;
 int contentWidth;
+int nameplateTextLineHeight = 15;
+int nameplateTextMarginTop = 85;
+int newsBoxTop = 60;
+
 PFont titleFont;
 PFont labelFont;
 PFont legendFont;
@@ -66,18 +70,22 @@ void drawNamePlate(){
   // relative width: width/37, relative horizontal placement: width/6.66
   strokeWeight(0.5);
   fill(#000000, 0.0);
-  rect(33, 20, 130, 55);
+  rect(marginLeft, newsBoxTop, 140, 65);
 
   // "All the News" text
   // Set the font and its size (in units of pixels)
   fill(#000000);
   textFont(nameplateText, 13);
-  text("\"All the News", 90, 40);
-  text("That's Fit to Analyze\"", 100, 60);
+  text("\"All the News", 90, newsBoxTop + 27);
+  text("That's Fit to Analyze\"", 100, newsBoxTop + 47);
 
   // Center the nameplate, TODO update height to make relative
   // or width/1.6, if you want relative width, and width*0.625 for relative horizontal placement
-  image(nytNameplate, width/5, marginLeft, 778, 127); 
+  
+  int nytNamePlateLeft = (marginLeft + contentWidth)/2 - nytNameplate.width/2;
+ 
+  
+  image(nytNameplate, nytNamePlateLeft, marginLeft, 778, 127);
 
   // nameplate line 1
   strokeWeight(0.5);
@@ -99,13 +107,16 @@ void drawNamePlate(){
   line(marginLeft, 180, marginLeft + contentWidth, nameplateInfoBarTop + 5);
   fill(#000000);
   
+  textAlign(CENTER);
   textFont(sansSerifBold, 15);
-  text("Meta Edition", 1100, 40);
+  text("Meta Edition", 1075, nameplateTextMarginTop - 18);
   textFont(nameplateText, 13);
-  text("A comparison of front", 1100, 60);
-  text("page coverage of US", 1100, 75);
-  text("and World news between", 1100, 90);
-  text("1987 and 2007", 1100, 105);
+
+  textAlign(LEFT);
+  text("A data comparison of", contentWidth-120, nameplateTextMarginTop);
+  text("front page coverage of", contentWidth-120, nameplateTextMarginTop + nameplateTextLineHeight);
+  text("US and World news,", contentWidth-120, nameplateTextMarginTop + nameplateTextLineHeight * 2);
+  text("1987 to 2007", contentWidth-120, nameplateTextMarginTop + nameplateTextLineHeight * 3);
 }
 
 void showCurrentDisplayMonth(){
@@ -114,7 +125,7 @@ void showCurrentDisplayMonth(){
   textAlign(CENTER);
   textFont(nameplateText, 13);
   fill(#000000);
-  text(currentDisplayMonth.monthName + ", " + 
+  text("New York, " + currentDisplayMonth.monthName + ", " + 
        Integer.toString(currentDisplayMonth.month.FPYear), marginLeft + contentWidth/2, nameplateInfoBarTop);
   
   Iterator columnIterator = currentDisplayMonth.columns.iterator();  
