@@ -3,6 +3,7 @@
 
 import java.util.*;
 import java.util.Random;
+import processing.serial.*;
 
 DataSource  data;
 ArrayList displayMonths;
@@ -19,6 +20,9 @@ int nameplateTextLineHeight = 15;
 int nameplateTextMarginTop = 85;
 int newsBoxTop = 60;
 
+IndexedDial dial;
+Serial serialPort;
+
 PFont titleFont;
 PFont labelFont;
 PFont legendFont;
@@ -30,7 +34,7 @@ PImage nytNameplate;
 void setup() {
   size(displayWidth, displayHeight);
   smooth();
-
+   
   titleFont = loadFont("Times-Roman-24.vlw");
   labelFont = loadFont("Times-Roman-14.vlw");
   legendFont = loadFont("Times-Roman-16.vlw");
@@ -41,9 +45,12 @@ void setup() {
   data = new NYTDataSource();
   ArrayList newsMonths = data.make("/Users/nathan/Development/civic/above_the_fold/AboveTheFold/data/top_news_on_front_page.csv"); 
   displayMonths = new ArrayList(newsMonths.size());
+  
 
   contentWidth = (columnWidth+columnHorizMargin) * 6 - 5;
   timeline = new DisplayTimeline(newsMonths, marginLeft, 710, contentWidth, 80, 1.0);
+
+  initializeSerialPort(newsMonths.size(), contentWidth);
   
   Iterator newsMonthsItr = newsMonths.iterator();  
   while(newsMonthsItr.hasNext()){
@@ -57,6 +64,13 @@ void setup() {
 
 void draw(){
   background(255);
+
+  dial.poll();
+  currentDisplayMonthIndex = dial.currentIndex - 1;
+  if(currentDisplayMonthIndex < 0){
+    currentDisplayMonthIndex = 0;
+  }
+
   showCurrentDisplayMonth();
   drawTimeline();
   drawLabels();
@@ -267,3 +281,12 @@ void mousePressed() {
   }
 }
 
+
+void initializeSerialPort(int indices, int scaleWidth){
+  for(int i =0 ; i< Serial.list().length; i++){
+   System.out.println(Serial.list()[i]); 
+  }
+  serialPort = new Serial(this, Serial.list()[0], 9600);
+  dial = new IndexedDial(serialPort, indices, scaleWidth);
+ 
+}
