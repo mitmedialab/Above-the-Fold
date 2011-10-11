@@ -12,15 +12,16 @@ ArrayList displayMonths;
 int currentDisplayMonthIndex;
 int displayWidth = 1280;
 int displayHeight = 786;
-int columnWidth = 185;
+int columnWidth = 170;
 int columnHorizMargin = 5; 
-int marginLeft = 30;
-int marginTop = 210;
-int nameplateInfoBarTop = 175;
+int marginLeft = 80;
+int marginTop = 240;
+int nameplateInfoBarTop = 205;
 int contentWidth;
 int nameplateTextLineHeight = 15;
-int nameplateTextMarginTop = 85;
-int newsBoxTop = 60;
+int nameplateTextMarginTop = 110;
+int nameplateTextMarginRight = 45;
+int newsBoxTop = 80;
 FullScreen fullscreen; 
 
 
@@ -54,7 +55,7 @@ void setup() {
   
 
   contentWidth = (columnWidth+columnHorizMargin) * 6 - 5;
-  timeline = new DisplayTimeline(newsMonths, marginLeft, 710, contentWidth, 80, 1.0);
+  timeline = new DisplayTimeline(newsMonths, marginLeft, marginTop + 500, contentWidth, 80, 1.0);
 
   initializeSerialPort(newsMonths.size(), contentWidth);
   
@@ -90,26 +91,27 @@ void drawNamePlate(){
   // relative width: width/37, relative horizontal placement: width/6.66
   strokeWeight(0.5);
   fill(#000000, 0.0);
-  rect(marginLeft, newsBoxTop, 140, 65);
+  rect(marginLeft, newsBoxTop, 130, 65);
 
   // "All the News" text
   // Set the font and its size (in units of pixels)
   fill(#000000);
+
   textFont(nameplateText, 13);
-  text("\"All the News", 90, newsBoxTop + 27);
-  text("That's Fit to Analyze\"", 100, newsBoxTop + 47);
+  text("\"All the News", marginLeft + 60, newsBoxTop + 27);
+  text("That's Fit to Analyze\"", marginLeft + 65, newsBoxTop + 47);
 
   // Center the nameplate, TODO update height to make relative
   // or width/1.6, if you want relative width, and width*0.625 for relative horizontal placement
   
-  int nytNamePlateLeft = (marginLeft + contentWidth)/2 - nytNameplate.width/2;
+  int nytNamePlateLeft = (marginLeft + contentWidth)/2 - nytNameplate.width/2 + 40;
  
   
-  image(nytNameplate, nytNamePlateLeft, marginTop-180, 778, 127);
+  image(nytNameplate, nytNamePlateLeft, marginTop-185, 778, 127);
 
   // nameplate line 1
   strokeWeight(0.5);
-  line(marginLeft, 160, marginLeft + contentWidth, nameplateInfoBarTop - 15);
+  line(marginLeft, nameplateInfoBarTop - 15, marginLeft + contentWidth, nameplateInfoBarTop - 15);
 
   // Volume Number in nameplate
   textFont(nameplateText, 13);
@@ -124,19 +126,20 @@ void drawNamePlate(){
 
   // nameplate line 2
   strokeWeight(1);
-  line(marginLeft, 180, marginLeft + contentWidth, nameplateInfoBarTop + 5);
+  line(marginLeft, nameplateInfoBarTop + 5, marginLeft + contentWidth, nameplateInfoBarTop + 5);
   fill(#000000);
   
   textAlign(CENTER);
   textFont(sansSerifBold, 15);
-  text("Meta Edition", 1075, nameplateTextMarginTop - 18);
+  text("Meta Edition", 1060, nameplateTextMarginTop - 18);
   textFont(nameplateText, 13);
 
+
   textAlign(LEFT);
-  text("A data comparison of", contentWidth-120, nameplateTextMarginTop);
-  text("front page coverage of", contentWidth-120, nameplateTextMarginTop + nameplateTextLineHeight);
-  text("US and World news,", contentWidth-120, nameplateTextMarginTop + nameplateTextLineHeight * 2);
-  text("1987 to 2007", contentWidth-120, nameplateTextMarginTop + nameplateTextLineHeight * 3);
+  text("A data comparison of", contentWidth - nameplateTextMarginRight, nameplateTextMarginTop);
+  text("front page coverage of", contentWidth-nameplateTextMarginRight, nameplateTextMarginTop + nameplateTextLineHeight);
+  text("US and World news,", contentWidth-nameplateTextMarginRight, nameplateTextMarginTop + nameplateTextLineHeight * 2);
+  text("1987 to 2007", contentWidth-nameplateTextMarginRight, nameplateTextMarginTop + nameplateTextLineHeight * 3);
 }
 
 void showCurrentDisplayMonth(){
