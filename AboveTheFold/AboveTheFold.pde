@@ -4,11 +4,13 @@
 import java.util.*;
 import java.util.Random;
 import processing.serial.*;
+import fullscreen.*; 
+
 
 DataSource  data;
 ArrayList displayMonths;
 int currentDisplayMonthIndex;
-int displayWidth = 1200;
+int displayWidth = 1280;
 int displayHeight = 786;
 int columnWidth = 185;
 int columnHorizMargin = 5; 
@@ -19,6 +21,8 @@ int contentWidth;
 int nameplateTextLineHeight = 15;
 int nameplateTextMarginTop = 85;
 int newsBoxTop = 60;
+FullScreen fullscreen; 
+
 
 IndexedDial dial;
 Serial serialPort;
@@ -34,6 +38,8 @@ PImage nytNameplate;
 void setup() {
   size(displayWidth, displayHeight);
   smooth();
+  fullscreen = new FullScreen(this);
+  fullscreen.enter();
    
   titleFont = loadFont("Times-Roman-24.vlw");
   labelFont = loadFont("Times-Roman-14.vlw");
@@ -99,7 +105,7 @@ void drawNamePlate(){
   int nytNamePlateLeft = (marginLeft + contentWidth)/2 - nytNameplate.width/2;
  
   
-  image(nytNameplate, nytNamePlateLeft, marginLeft, 778, 127);
+  image(nytNameplate, nytNamePlateLeft, marginTop-180, 778, 127);
 
   // nameplate line 1
   strokeWeight(0.5);
