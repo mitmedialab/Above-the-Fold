@@ -1,3 +1,5 @@
+package AboveTheFold;
+
 import java.util.*;
 
 public class NewsColumnModel{

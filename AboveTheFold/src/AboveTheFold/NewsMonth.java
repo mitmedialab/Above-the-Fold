@@ -1,3 +1,5 @@
+package AboveTheFold;
+
 public class NewsMonth{
   public int FPYear;
   public int FPMonth;

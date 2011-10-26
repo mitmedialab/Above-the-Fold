@@ -1,0 +1,75 @@
+<project name="AboveTheFold" default="dist" basedir=".">
+  <description>Above The Fold</description>
+
+  <property name="src.dir"   value="src"/>
+  <property name="build.dir" value="build"/>
+  <property name="dist.dir"  value="dist"/>
+  <property name="junit.dir" value="junit-results"/>
+  <property name="lib.dir"   value="lib"/>
+  <property name="jar.name"  value="AboveTheFold.jar"/>
+
+  <property name="junit.jar" location="lib/junit.jar"/>
+  <property name="core.jar" location="lib/core.jar"/>
+  <property name="main-class" value="AboveTheFold.AboveTheFold"/>
+
+  <path id="classpath">
+    <pathelement location="${build.dir}" />
+    <fileset dir="lib">
+        <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+
+  <target name="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+    <mkdir dir="${junit.dir}"/>
+  </target>
+
+  <target name="build" depends="init" description="build everything under ${src.dir}" >
+    <!-- includeantruntime included to get around ant 1.8 misfeature -->
+    <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="build" description="unit test" >
+    <dirname property="junit.raw" file="${junit.dir}/raw/"/>
+    <mkdir dir="${junit.raw}" />
+    <junit errorProperty="test.failed" failureProperty="test.failed">
+      <batchtest fork="yes" todir="${junit.raw}"> 
+        <formatter type="xml"/> 
+        <fileset dir="${src.dir}"> 
+          <include name="**/*Test*.java"/> 
+        </fileset> 
+      </batchtest> 
+      <formatter type="brief" usefile="false" />
+      <formatter type="xml" />
+      <classpath refid="classpath" />
+    </junit>
+    <fail message="Tests failed: check test reports." if="test.failed" />
+  </target>
+
+  <target name="dist" depends="build" description="generate the distribution" >
+    <jar jarfile="${dist.dir}/${jar.name}" basedir="${build.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="{$main-class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run" depends="dist">
+    <java fork="true" classname="${main-class}">
+      <classpath>
+        <path refid="classpath"/>
+        <path id="application" location="${dist.dir}/${jar.name}"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="clean" description="clean up" >
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+    <delete dir="${junit.dir}"/>
+  </target>
+</project>
