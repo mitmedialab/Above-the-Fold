@@ -10,7 +10,7 @@
 
   <property name="junit.jar" location="lib/junit.jar"/>
   <property name="core.jar" location="lib/core.jar"/>
-  <property name="main-class" value="AboveTheFold.AboveTheFold"/>
+  <property name="main-class" value="aboveTheFold.AboveTheFold"/>
 
   <path id="classpath">
     <pathelement location="${build.dir}" />
@@ -30,6 +30,7 @@
     <!-- includeantruntime included to get around ant 1.8 misfeature -->
     <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
       <classpath refid="classpath"/>
+<!--      <compilerarg value="-Xlint:unchecked"/>-->
     </javac>
   </target>
 

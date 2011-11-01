@@ -1,4 +1,4 @@
-package AboveTheFold;
+package aboveTheFold;
 
 public class NewsMonth{
   public int FPYear;

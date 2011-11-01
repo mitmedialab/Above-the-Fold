@@ -1,4 +1,4 @@
-package AboveTheFold;
+package aboveTheFold;
 
 import processing.core.*;
 //import processing.serial.*;
