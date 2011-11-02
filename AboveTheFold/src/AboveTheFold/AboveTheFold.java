@@ -4,7 +4,7 @@ import processing.core.*;
 import java.util.*;
 import java.util.Random;
 //import processing.serial.*;
-//import fullscreen.*;
+import fullscreen.*;
 
 public class AboveTheFold extends PApplet{
   DataSource  data;
@@ -22,7 +22,7 @@ public class AboveTheFold extends PApplet{
   int nameplateTextMarginTop;
   int nameplateTextMarginRight;
   int newsBoxTop;
-  //FullScreen fullscreen;
+  FullScreen fullscreen;
 
   //IndexedDial dial;
   //Serial serialPort;
@@ -51,8 +51,8 @@ public class AboveTheFold extends PApplet{
 
     size(displayWidth, displayHeight);
     smooth();
-//    fullscreen = new FullScreen(this);
-    //fullscreen.enter();
+    fullscreen = new FullScreen(this);
+    fullscreen.enter();
 
     titleFont = loadFont("Times-Roman-24.vlw");
     labelFont = loadFont("Times-Roman-14.vlw");
