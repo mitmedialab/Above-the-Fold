@@ -32,7 +32,7 @@ public class AboveTheFold extends PApplet{
   PFont legendFont;
   PFont nameplateText;
   PFont sansSerifBold;
-  //DisplayTimeline timeline;
+  DisplayTimeline timeline;
   PImage nytNameplate;
 
 
@@ -105,12 +105,12 @@ public class AboveTheFold extends PApplet{
     // "All the News" box
     // relative width: width/37, relative horizontal placement: width/6.66
     strokeWeight((float)0.5);  
-    fill(0x000000, (float)0.0);
+    fill(color(0,0,0), (float)0.0);
     rect(marginLeft, newsBoxTop, 130, 65);
 
     // "All the News" text
     // Set the font and its size (in units of pixels)
-    fill(0x000000);
+    fill(color(0,0,0));
 
     textFont(nameplateText, 13);
     text("\"All the News", marginLeft + 60, newsBoxTop + 27);
@@ -142,7 +142,7 @@ public class AboveTheFold extends PApplet{
     // nameplate line 2
     strokeWeight(1);
     line(marginLeft, nameplateInfoBarTop + 5, marginLeft + contentWidth, nameplateInfoBarTop + 5);
-    fill(0x000000);
+    fill(color(0,0,0));
 
     textAlign(CENTER);
     textFont(sansSerifBold, 15);
@@ -164,7 +164,7 @@ public class AboveTheFold extends PApplet{
 
     textAlign(CENTER);
     textFont(nameplateText, 13);
-    fill(0x000000);
+    fill(color(0,0,0));
     text("New York, " + currentDisplayMonth.monthName + ", " +
          Integer.toString(currentDisplayMonth.month.FPYear), marginLeft + contentWidth/2, nameplateInfoBarTop);
 
@@ -191,12 +191,12 @@ public class AboveTheFold extends PApplet{
 //    rect( timeline.left+100, timeline.bottom-105 , 10, 10);
 
     //Other
-    fill(0x333333);
-    stroke(0x333333);
+    fill(color(30,30,30));
+    stroke(color(30,30,30));
 //    rect( timeline.left+200, timeline.bottom-105 , 10, 10);
 
     textFont(labelFont);
-    fill(0x000000);
+    fill(color(0,0,0));
 /*    text("U.S.",  timeline.left + 20, timeline.bottom-95);
     text("World",  timeline.left + 120, timeline.bottom-95);
     text("Other",  timeline.left + 220, timeline.bottom-95);*/
@@ -214,11 +214,11 @@ public class AboveTheFold extends PApplet{
     while(columnLineIterator.hasNext()){
       String type = (String) columnLineIterator.next();
       if(type == "U.S."){
-        strokeColor = 0xF0997C;
+        strokeColor = color(248, 170, 146);
       }else if(type == "World"){
-        strokeColor = 0x85A2C5;
+        strokeColor = color(149, 178, 205);
       }else{
-        strokeColor = 0x666666;
+        strokeColor = color(121,121,121);
       }
       stroke(strokeColor);
       strokeCap(SQUARE);
