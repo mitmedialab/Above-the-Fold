@@ -24,6 +24,10 @@ public class AboveTheFold extends PApplet{
   int newsBoxTop;
   FullScreen fullscreen;
 
+  int worldColor;
+  int usColor;
+  int otherColor;
+
   //IndexedDial dial;
   //Serial serialPort;
  
@@ -49,6 +53,11 @@ public class AboveTheFold extends PApplet{
     nameplateTextMarginRight = 45;
     newsBoxTop = 80;
 
+    usColor    = color(248, 170, 146);
+    worldColor = color(149, 178, 205);
+    otherColor = color(121,121,121);
+
+
     size(displayWidth, displayHeight);
     smooth();
     fullscreen = new FullScreen(this);
@@ -67,7 +76,7 @@ public class AboveTheFold extends PApplet{
 
 
     contentWidth = (columnWidth+columnHorizMargin) * 6 - 5;
-    //timeline = new DisplayTimeline(newsMonths, marginLeft, marginTop + 500, contentWidth, 80, 1.0);
+    timeline = new DisplayTimeline(newsMonths, marginLeft, marginTop + 500, contentWidth, 80, (float)1.0);
 
 
     //initializeSerialPort(newsMonths.size(), contentWidth);
@@ -95,7 +104,7 @@ public class AboveTheFold extends PApplet{
     }
 
     showCurrentDisplayMonth();
-//    drawTimeline();
+    drawTimeline();
     drawLabels();
     drawNamePlate();
   }
@@ -181,25 +190,25 @@ public class AboveTheFold extends PApplet{
     textAlign(LEFT);
 
     //U.S. News
-    fill(0xF0997C);
-    stroke(0xF0997C);
- //   rect( timeline.left, timeline.bottom-105 , 10, 10);
+    fill(usColor);
+    stroke(usColor);
+    rect( timeline.left, timeline.bottom-105 , 10, 10);
 
     //World News
-    fill(0x85A2C5);
-    stroke(0x85A2C5);
-//    rect( timeline.left+100, timeline.bottom-105 , 10, 10);
+    fill(worldColor);
+    stroke(worldColor);
+    rect( timeline.left+100, timeline.bottom-105 , 10, 10);
 
     //Other
-    fill(color(30,30,30));
-    stroke(color(30,30,30));
-//    rect( timeline.left+200, timeline.bottom-105 , 10, 10);
+    fill(otherColor);
+    stroke(otherColor);
+    rect( timeline.left+200, timeline.bottom-105 , 10, 10);
 
     textFont(labelFont);
     fill(color(0,0,0));
-/*    text("U.S.",  timeline.left + 20, timeline.bottom-95);
+    text("U.S.",  timeline.left + 20, timeline.bottom-95);
     text("World",  timeline.left + 120, timeline.bottom-95);
-    text("Other",  timeline.left + 220, timeline.bottom-95);*/
+    text("Other",  timeline.left + 220, timeline.bottom-95);
   }
 
   protected void drawColumn(NewsColumnModel column, int columnNumber){
@@ -208,17 +217,17 @@ public class AboveTheFold extends PApplet{
     int y = marginTop;
 
     Iterator columnLineIterator = column.columnLines.iterator();
-    int strokeColor = 0xCCCCCC;
+    int strokeColor = color(200,200,200);
     strokeWeight(12);
 
     while(columnLineIterator.hasNext()){
       String type = (String) columnLineIterator.next();
       if(type == "U.S."){
-        strokeColor = color(248, 170, 146);
+        strokeColor = usColor;
       }else if(type == "World"){
-        strokeColor = color(149, 178, 205);
+        strokeColor = worldColor;
       }else{
-        strokeColor = color(121,121,121);
+        strokeColor = otherColor;
       }
       stroke(strokeColor);
       strokeCap(SQUARE);
@@ -246,5 +255,73 @@ public class AboveTheFold extends PApplet{
   }*/
 
 
+  void drawTimeline(){
+    textAlign(LEFT);
+  
+    stroke(color(200,200,200));
+    strokeWeight(1);
+    int location[] = new int[2];
+
+    //draw quarterly ticks
+    /*
+    for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+      if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth % 3 == 0){
+        int xLocation = timeline.getXLocation(monthIndex);
+        line(xLocation, timeline.bottom+2, xLocation, timeline.bottom-5);
+      }
+    }*/
+    //draw annual ticks
+    textFont(labelFont);
+    fill(color(0,0,0));
+    for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+      if(((NewsMonth)timeline.newsMonths.get(monthIndex)).FPMonth-1 % 12 == 0){
+        int xLocation = timeline.getXLocation(monthIndex);
+        line(xLocation, timeline.bottom+15, xLocation, timeline.bottom);
+        text(Integer.toString((int)((NewsMonth)timeline.newsMonths.get(monthIndex)).FPYear), xLocation +2, timeline.bottom+14);
+        }
+    }
+
+    //draw world graph
+    strokeWeight(2);
+    strokeJoin(ROUND);
+    fill(color(0,0,0), (float)0.0);
+    stroke(worldColor);
+    int[] previousLocation = new int[2];
+
+    beginShape();
+    for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+      location = timeline.getWorldLocation(monthIndex);
+      vertex(location[0], location[1]);
+    }
+    endShape();
+
+    //draw the U.S. graph
+    strokeWeight(2);
+    fill(color(0,0,0), (float)0.0);
+    stroke(usColor);
+    beginShape();
+    for(int monthIndex = 0; monthIndex < timeline.newsMonths.size(); monthIndex++){
+      location = timeline.getUSLocation(monthIndex);
+      vertex(location[0], location[1]);
+    }
+    endShape();
+
+
+    stroke(color(200,200,200));
+    strokeWeight(1);
+
+    //draw scale
+    line(timeline.left, timeline.bottom, timeline.left+timeline.width, timeline.bottom);
+    line(timeline.left, timeline.bottom, timeline.left, timeline.bottom-timeline.height);
+    line(timeline.width+timeline.left, timeline.bottom, timeline.width+timeline.left, timeline.bottom-timeline.height);
+
+    //draw the current Cursor
+    stroke(color(50,50,50));
+    strokeWeight((float)1.5);
+    fill(color(0,0,0), (float)0.0);
+    int cursorLocation = timeline.getXLocation(currentDisplayMonthIndex);
+    rect( cursorLocation-2, timeline.bottom-80 , 4, 75);
+
+  }
 
 }
