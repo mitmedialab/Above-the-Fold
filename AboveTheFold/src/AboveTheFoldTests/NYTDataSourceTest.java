@@ -7,10 +7,14 @@ import java.util.ArrayList;
 public class NYTDataSourceTest extends TestCase{
 
   public void testLoadStrings(){
-//    assertEquals( "Equality Test", 0, 1 );
     DataSource dataSource = new NYTDataSource();
     ArrayList strings = ((NYTDataSource)dataSource).loadStrings("fixtures/nyt_data_source.csv");
-    assertEquals(strings.size(), 5);
-
+    assertEquals(strings.size(), 6);
+  }
+  private void printArrayList(ArrayList al){
+    Iterator iterator = al.iterator();
+    while(iterator.hasNext()){
+      System.out.println(iterator.next().toString());
+    }
   }
 }
