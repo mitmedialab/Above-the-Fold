@@ -1,7 +1,8 @@
 <project name="AboveTheFold" default="dist" basedir=".">
   <description>Above The Fold</description>
 
-  <property name="src.dir"   value="src"/>
+  <property name="src.dir"   value="src/AboveTheFold"/>
+  <property name="tst.dir"   value="src/AboveTheFoldTests"/>
   <property name="build.dir" value="build"/>
   <property name="dist.dir"  value="dist"/>
   <property name="junit.dir" value="junit-results"/>
@@ -12,13 +13,18 @@
   <property name="core.jar" location="lib/core.jar"/>
   <property name="main-class" value="aboveTheFold.AboveTheFold"/>
 
-  <path id="classpath">
+  <path id="classpath.base">
     <pathelement location="${build.dir}" />
     <fileset dir="lib">
         <include name="**/*.jar"/>
     </fileset>
   </path>
 
+  <path id="classpath.test">
+    <pathelement location="${junit.jar}"/>
+    <pathelement location="${tst.dir}" />
+    <path refid="classpath.base" />
+  </path>
 
   <target name="init">
     <mkdir dir="${build.dir}"/>
@@ -28,25 +34,32 @@
 
   <target name="build" depends="init" description="build everything under ${src.dir}" >
     <!-- includeantruntime included to get around ant 1.8 misfeature -->
-    <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
-      <classpath refid="classpath"/>
-<!--      <compilerarg value="-Xlint:unchecked"/>-->
+    <javac destdir="${build.dir}" includeantruntime="false">
+      <src path="${src.dir}"/>
+      <classpath refid="classpath.base"/>
     </javac>
   </target>
 
-  <target name="test" depends="build" description="unit test" >
+  <target name="test-build" depends="build" description="build everything under ${tst.dir}">
+    <javac destdir="${build.dir}" includeantruntime="false">
+      <src path="${tst.dir}"/>
+      <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="test-build" description="unit test" >
     <dirname property="junit.raw" file="${junit.dir}/raw/"/>
     <mkdir dir="${junit.raw}" />
     <junit errorProperty="test.failed" failureProperty="test.failed">
+      <classpath refid="classpath.test" />
       <batchtest fork="yes" todir="${junit.raw}"> 
         <formatter type="xml"/> 
-        <fileset dir="${src.dir}"> 
-          <include name="**/*Test*.java"/> 
+        <fileset dir="${tst.dir}"> 
+          <include name="*Test*.java"/> 
         </fileset> 
       </batchtest> 
       <formatter type="brief" usefile="false" />
       <formatter type="xml" />
-      <classpath refid="classpath" />
     </junit>
     <fail message="Tests failed: check test reports." if="test.failed" />
   </target>
@@ -62,7 +75,7 @@
   <target name="run" depends="dist">
     <java fork="true" classname="${main-class}">
       <classpath>
-        <path refid="classpath"/>
+        <path refid="classpath.base"/>
         <path id="application" location="${dist.dir}/${jar.name}"/>
       </classpath>
     </java>

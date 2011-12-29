@@ -11,19 +11,30 @@ public class NYTDataSource implements DataSource {
     // seeded, so we can reproduce results
   }
 
-  public ArrayList make(String filename) {
-    ArrayList lines = loadStrings(filename);
-    String [][] csv;
-    ArrayList months = new ArrayList();
+
+  public int getCsvWidth(ArrayList lines){
     int csvWidth=0;
-    
-    //calculate max width of csv file
     for (int i=0; i < lines.size(); i++) {
       String [] chars=lines.get(i).toString().split(",");
       if (chars.length>csvWidth){
         csvWidth=chars.length;
       }
     }
+    return csvWidth;
+  }
+
+/*  public ArrayList loadCategoryArray(String filename){
+    ArrayList lines = loadStrings(filename);
+    String [][] csv;
+    ArrayList months = new ArrayList();
+    int csvWidth = csvWidth(lines);
+  }*/
+
+  public ArrayList make(String filename) {
+    ArrayList lines = loadStrings(filename);
+    String [][] csv;
+    ArrayList months = new ArrayList();
+    int csvWidth = getCsvWidth(lines);
     
     String [] fieldNames = new String[csvWidth];
     

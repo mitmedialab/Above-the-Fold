@@ -15,7 +15,7 @@ public class DisplayMonth{
   public DisplayMonth(NewsMonth newsMonth){
     currentColumn = 0;
     columnRows = 23;
-    columnCount = 6;
+    columnCount = 3;
     
     month = newsMonth;
     columns = new ArrayList(columnCount);
