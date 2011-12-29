@@ -1,4 +1,5 @@
 package aboveTheFold;
+import java.lang.String;
 
 public class NewsMonth{
   public int FPYear;
@@ -18,5 +19,9 @@ public class NewsMonth{
     
     WorldPercentage = (float)WorldArticles / ((float)TotalArticles / (float)100.00);
     USPercentage = (float)USArticles / ((float)TotalArticles / (float)100.000) ;
+  }
+
+  public String toString(){
+    return "NewsMonth: " + FPMonth + "/" + FPYear + " Total: " + TotalArticles + " World: " + WorldArticles + " US: " + USArticles;
   }
 }
